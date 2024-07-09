@@ -4,6 +4,8 @@ use App\Events\TakePicture;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Models\StatusLampu;
+use App\Models\TimerLampu;
 use App\Models\Token;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -40,3 +42,8 @@ Route::post('store-token', function (Request $request) {
         'token' => $request->token,
     ]);
 })->name('store-token');
+Route::get('get-data', function () {
+    $lampu = TimerLampu::first();
+    $status = StatusLampu::first();
+    return response()->json([$lampu, $status]);
+});
