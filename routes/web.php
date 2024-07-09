@@ -28,7 +28,7 @@ Route::get('webcam', function (Request $request) {
 
 Route::get('trigger', function () {
 
-    event(new TakePicture('ttt'));
+    broadcast(new TakePicture('data'));
 });
 
 Route::get('ganti-token', function (Request $request) {
