@@ -12,6 +12,7 @@ import InputText from "@/Components/InputText";
 import { debounce, TextField } from "@mui/material";
 import moment from "moment";
 export default function Dashboard(props) {
+    const token = props.token;
     const status = props.status;
     const durasi = props.durasi;
     const pelanggaran = props.pelanggaran;
@@ -29,9 +30,9 @@ export default function Dashboard(props) {
 
         const startBasicCall = async () => {
             await client.current.join(
-                "2bfc957f00bd463383d3b3385a9e7dbe",
-                "trafic",
-                "007eJxTYLA6aDrx1+YHHIZOMzLjmzdKaLu/Y1pZuzlPdMErhrPRazcrMBglpSVbmpqnGRgkpZiYGRtbGKcYJwEp00TLVPOUpFTta91pDYGMDAemlTEwQiGIz8ZQUpSYlpnMwAAAe6ogYQ==",
+                token.idToken,
+                token.channel,
+                token.token,
                 null
             );
             client.current.on("user-published", async (user, mediaType) => {

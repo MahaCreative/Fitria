@@ -3,7 +3,8 @@ import AgoraRTC from "agora-rtc-sdk-ng";
 
 import React, { useEffect, useRef, useState } from "react";
 
-function AksesWebcam() {
+function AksesWebcam(props) {
+    const token = props.token;
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const client = useRef(null);
@@ -15,9 +16,9 @@ function AksesWebcam() {
 
         const startBasicCall = async () => {
             await client.current.join(
-                "2bfc957f00bd463383d3b3385a9e7dbe",
-                "trafic",
-                "007eJxTYLA6aDrx1+YHHIZOMzLjmzdKaLu/Y1pZuzlPdMErhrPRazcrMBglpSVbmpqnGRgkpZiYGRtbGKcYJwEp00TLVPOUpFTta91pDYGMDAemlTEwQiGIz8ZQUpSYlpnMwAAAe6ogYQ==",
+                token.idToken,
+                token.channel,
+                token.token,
                 null
             );
             localVideoTrack.current = await AgoraRTC.createCameraVideoTrack();

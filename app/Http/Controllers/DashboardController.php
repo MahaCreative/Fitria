@@ -6,6 +6,7 @@ use App\Models\FotoPelanggaran;
 use App\Models\Pelanggaran;
 use App\Models\StatusLampu;
 use App\Models\TimerLampu;
+use App\Models\Token;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -37,6 +38,7 @@ class DashboardController extends Controller
         if ($request->tahun) {
             $query->whereYear('tanggal', '=', $request->tahun);
         }
+        $token = Token::first();
         $pelanggaran = $query->latest()->paginate();
         return inertia('Dashboard', compact(
             'status',
@@ -45,6 +47,7 @@ class DashboardController extends Controller
             'totalPelangganTerbaru',
             'totalPelanggaranBulanTerbaru',
             'totalPelanggaranTahunTerbaru',
+            'token'
         ));
     }
 

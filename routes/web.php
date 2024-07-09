@@ -4,7 +4,7 @@ use App\Events\TakePicture;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
-
+use App\Models\Token;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -19,7 +19,8 @@ Route::post('upadte-status', [DashboardController::class, 'updateStatus'])->name
 Route::post('update-durasi', [DashboardController::class, 'updateDurasi'])->name('update-durasi');
 Route::post('kirim-foto', [DashboardController::class, 'kirimFoto'])->name('kirim-foto');
 Route::get('webcam', function (Request $request) {
-    return inertia('AksesWebcam');
+    $token = Token::first();
+    return inertia('AksesWebcam', compact('token'));
 });
 
 
@@ -27,3 +28,15 @@ Route::get('trigger', function () {
 
     event(new TakePicture('ttt'));
 });
+
+Route::get('ganti-token', function (Request $request) {
+    return inertia('GantiToken');
+});
+Route::post('store-token', function (Request $request) {
+    $token = Token::first();
+    $token->update([
+        'idToken' => $request->idToken,
+        'channel' => $request->channel,
+        'token' => $request->token,
+    ]);
+})->name('store-token');
