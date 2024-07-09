@@ -64,8 +64,9 @@ function AksesWebcam(props) {
         }
     };
 
-    window.Echo.channel("trafics").listen("TakePicture", (data) => {
+    Echo.channel("trafics").listen("TakePicture", (data) => {
         captureImage();
+        console.log(data);
     });
     return (
         <div>
