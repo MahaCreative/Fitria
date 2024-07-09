@@ -26,8 +26,8 @@ class TakePicture implements ShouldBroadcast
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): array
+    public function broadcastOn()
     {
-        return [new Channel('trafics')];
+        return new Channel('trafics');
     }
 }
