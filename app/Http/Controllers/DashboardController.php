@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProsesImage;
 use App\Models\FotoPelanggaran;
 use App\Models\Pelanggaran;
 use App\Models\StatusLampu;
@@ -11,6 +12,7 @@ use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use PhpMqtt\Client\Facades\MQTT;
 use Telegram\Bot\Api;
 use Telegram\Bot\FileUpload\InputFile;
 
@@ -56,6 +58,8 @@ class DashboardController extends Controller
 
         $status = StatusLampu::first();
         $status->update(['status' => $request->status]);
+        $data = json_encode(['status' => $status->status]);
+        MQTT::publish('fitria_get_status', $data);
         return redirect()->back();
     }
     public function updateDurasi(Request $request)
@@ -67,39 +71,15 @@ class DashboardController extends Controller
         ]);
         $timer = TimerLampu::first();
         $timer->update(['lampu_merah' => $request->lampu_merah, 'lampu_hijau' => $request->lampu_hijau, 'lampu_kuning' => $request->lampu_kuning]);
+        $data = json_encode($timer);
+        MQTT::publish('fitria_get_timer', $data);
         return redirect()->back();
     }
 
     public function kirimFoto(Request $request)
     {
-        $now = now();
-        $getPelanggaran = Pelanggaran::whereDate('tanggal', $now)->first();
         $foto = $request->file('foto')->store('foto');
-        $path = $request->file('foto')->path();
-        if ($getPelanggaran) {
-            $status = FotoPelanggaran::create(['pelanggaran_id' => $getPelanggaran->id, 'foto' => $foto]);
-            $getPelanggaran->jumlah = $getPelanggaran->jumlah + 1;
-            $getPelanggaran->save();
-        } else {
-            $getPelanggaran = Pelanggaran::create([
-                'tanggal' => now(),
-                'jumlah' => 1,
-            ]);
-            $status = FotoPelanggaran::create(['pelanggaran_id' => $getPelanggaran->id, 'foto' => $foto]);
-        }
-        $telegram = new Api('7428564109:AAE2p2bd7GQ26VBWE0wUjzq4NpMgP-NfYWE');
-        try {
-            $inputFile = InputFile::create($path);
 
-            $response = $telegram->sendPhoto([
-                'chat_id' => '6764864714', // Gantilah dengan chat ID yang sesuai
-                'photo' => $inputFile,
-                'caption' => 'Terjadi pelanggaran'
-            ]);
-
-            return json_decode($response->getBody(), true);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        ProsesImage::dispatch($foto);
     }
 }

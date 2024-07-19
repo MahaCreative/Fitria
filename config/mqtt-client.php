@@ -43,7 +43,7 @@ return [
 
             // A specific client id to be used for the connection. If omitted,
             // a random client id will be generated for each new connection.
-            'client_id' => env('MQTT_CLIENT_ID'),
+            'client_id' => '6be15789-c7c6-4a01-adcc-b4615a017254',
 
             // Whether a clean session shall be used and requested by the client.
             // A clean session will let the broker forget about subscriptions and
@@ -82,8 +82,8 @@ return [
 
                 // Credentials used for authentication and authorization.
                 'auth' => [
-                    'username' => env('MQTT_AUTH_USERNAME'),
-                    'password' => env('MQTT_AUTH_PASSWORD'),
+                    'username' => 'gunturMadjid123',
+                    'password' => 'gunturMADJID123#',
                 ],
 
                 // Can be used to declare a last will during connection. The last will
