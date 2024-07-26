@@ -49,13 +49,13 @@ class ProsesImage implements ShouldQueue
             ]);
             $status = FotoPelanggaran::create(['pelanggaran_id' => $getPelanggaran->id, 'foto' => $this->foto]);
         }
-        $telegram = new Api('6747035337:AAEVydje_jSuuPqhpbc5-G6W9O6DnUyi6jc');
+        $telegram = new Api('7428564109:AAE2p2bd7GQ26VBWE0wUjzq4NpMgP-NfYWE');
 
         try {
             $inputFile = InputFile::create($path);
 
             $response = $telegram->sendPhoto([
-                'chat_id' => '6552942907',
+                'chat_id' => '6764864714',
                 'photo' => $inputFile,
                 'caption' => 'Terjadi pelanggaran'
             ]);
