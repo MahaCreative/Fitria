@@ -65,9 +65,9 @@ class DashboardController extends Controller
     public function updateDurasi(Request $request)
     {
         $request->validate([
-            'lampu_merah' => 'required|numeric|min:10|max:240',
-            'lampu_hijau' => 'required|numeric|min:10|max:240',
-            'lampu_kuning' => 'required|numeric|min:10|max:240',
+            'lampu_merah' => 'required|numeric|min:1|max:240',
+            'lampu_hijau' => 'required|numeric|min:1|max:240',
+            'lampu_kuning' => 'required|numeric|min:1|max:240',
         ]);
         $timer = TimerLampu::first();
         $timer->update(['lampu_merah' => $request->lampu_merah, 'lampu_hijau' => $request->lampu_hijau, 'lampu_kuning' => $request->lampu_kuning]);
